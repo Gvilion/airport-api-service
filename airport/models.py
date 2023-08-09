@@ -14,12 +14,18 @@ class Crew(models.Model):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    class Meta:
+        ordering = ["first_name", "last_name"]
+
 
 class AirplaneType(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Airplane(models.Model):
@@ -37,6 +43,9 @@ class Airplane(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Airport(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -44,6 +53,9 @@ class Airport(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.closest_big_city})"
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Route(models.Model):
@@ -58,6 +70,10 @@ class Route(models.Model):
     def __str__(self):
         return f"{self.source}-{self.destination}"
 
+    class Meta:
+        ordering = ["source", "destination"]
+        unique_together = ["source", "destination"]
+
 
 class Flight(models.Model):
     route = models.ForeignKey(
@@ -71,6 +87,9 @@ class Flight(models.Model):
 
     def __str__(self):
         return f"({self.route})({self.departure_time}-{self.arrival_time})"
+
+    class Meta:
+        ordering = ["-departure_time"]
 
 
 class Order(models.Model):
