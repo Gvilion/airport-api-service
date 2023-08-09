@@ -1,13 +1,15 @@
-from django.shortcuts import render
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
-from airport.models import Crew, AirplaneType, Airplane
+from airport.models import Crew, AirplaneType, Airplane, Airport, Route
 from airport.serializers import (
     CrewSerializer,
     AirplaneListSerializer,
     AirplaneTypeSerializer,
-    AirplaneSerializer
+    AirplaneSerializer,
+    AirportSerializer,
+    RouteSerializer,
+    RouteListSerializer
 )
 
 
@@ -42,3 +44,30 @@ class AirplaneViewSet(
             return AirplaneListSerializer
 
         return AirplaneSerializer
+
+
+class AirportViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
+    queryset = Airport.objects.all()
+    serializer_class = AirportSerializer
+
+
+class RouteViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
+    queryset = Route.objects.all()
+    serializer_class = RouteSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return RouteListSerializer
+
+        return RouteSerializer
+
+
+
