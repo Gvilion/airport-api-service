@@ -67,8 +67,32 @@ class Route(models.Model):
     )
     distance = models.IntegerField()
 
+    @property
+    def source_destination_str(self):
+        return f"{self.source.name}-{self.destination.name}"
+
+    @staticmethod
+    def validate_route(source, destination, error_to_raise):
+        if source.name == destination.name:
+            raise error_to_raise(
+                "Source and destination must be equal"
+            )
+
+    def clean(self):
+        self.validate_route(self.source, self.destination, ValidationError)
+
+    def save(
+            self,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None,
+    ):
+        self.full_clean()
+        return super().save(force_insert, force_update, using, update_fields)
+
     def __str__(self):
-        return f"{self.source}-{self.destination}"
+        return self.source_destination_str
 
     class Meta:
         ordering = ["source", "destination"]
@@ -82,6 +106,7 @@ class Flight(models.Model):
     airplane = models.ForeignKey(
         Airplane, on_delete=models.CASCADE, related_name="flights"
     )
+    crew = models.ManyToManyField(Crew, related_name="flights")
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
 
