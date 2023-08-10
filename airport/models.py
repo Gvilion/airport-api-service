@@ -75,7 +75,7 @@ class Route(models.Model):
     def validate_route(source, destination, error_to_raise):
         if source.name == destination.name:
             raise error_to_raise(
-                "Source and destination must be equal"
+                "Source and destination mustn't be equal"
             )
 
     def clean(self):
