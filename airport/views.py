@@ -1,4 +1,6 @@
 from django.db.models import F, Count
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -156,6 +158,24 @@ class FlightViewSet(viewsets.ModelViewSet):
             return FlightDetailSerializer
 
         return FlightSerializer
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "source",
+                type=OpenApiTypes.STR,
+                description="Filter by flight source (ex. ?source=fiction)",
+            ),
+            OpenApiParameter(
+                "destination",
+                type=OpenApiTypes.STR,
+                description=("Filter by flight destination "
+                             "(ex. ?destination=fiction)"),
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class OrderPagination(PageNumberPagination):
