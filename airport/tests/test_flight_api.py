@@ -16,10 +16,10 @@ from airport.serializers import (
 
 
 def sample_crew(**params):
-    i = Crew.objects.count() + 1
+    index = Crew.objects.count() + 1
     defaults = {
-        "first_name": f"first_name{i}",
-        "last_name": f"first_name{i}"
+        "first_name": f"first_name{index}",
+        "last_name": f"first_name{index}"
     }
     defaults.update(params)
 
@@ -27,9 +27,9 @@ def sample_crew(**params):
 
 
 def sample_airplane_type(**params):
-    i = AirplaneType.objects.count() + 1
+    index = AirplaneType.objects.count() + 1
     defaults = {
-        "name": f"airplane_type{i}",
+        "name": f"airplane_type{index}",
     }
     defaults.update(params)
 
@@ -37,9 +37,9 @@ def sample_airplane_type(**params):
 
 
 def sample_airplane(**params):
-    i = Airplane.objects.count() + 1
+    index = Airplane.objects.count() + 1
     defaults = {
-        "name": f"airplane{i}",
+        "name": f"airplane{index}",
         "rows": 50,
         "seats_in_row": 10,
         "airplane_type": sample_airplane_type()
@@ -50,10 +50,10 @@ def sample_airplane(**params):
 
 
 def sample_airport(**params):
-    i = Airport.objects.count() + 1
+    index = Airport.objects.count() + 1
     defaults = {
-        "name": f"airport{i}",
-        "closest_big_city": f"city{i}",
+        "name": f"airport{index}",
+        "closest_big_city": f"city{index}",
     }
     defaults.update(params)
 
